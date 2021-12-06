@@ -18,6 +18,13 @@ def test_shelf():
     assert banker.balance == 0
 
 
+def test_bank_return():
+    banker = Banker()
+    banker.shelf(100)
+    added_to_bank = banker.bank()
+    assert added_to_bank == 100
+
+
 
 def test_deposit():
     banker = Banker()
