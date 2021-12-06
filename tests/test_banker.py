@@ -27,7 +27,7 @@ def test_deposit():
     assert banker.balance == 100
 
 
-@pytest.mark.skip()
+
 def test_clear_shelf():
     banker = Banker()
     banker.shelf(100)
