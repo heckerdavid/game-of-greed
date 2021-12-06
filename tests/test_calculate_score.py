@@ -45,13 +45,13 @@ def test_three_fives():
     expected = 500
     assert actual == expected
 
-@pytest.mark.skip("Pending")
+
 def test_three_ones():
     actual = GameLogic.calculate_score((1, 1, 1, 2, 3, 4))
     expected = 1000
     assert actual == expected
 
-@pytest.mark.skip("Pending")
+
 def test_three_ones_and_a_five():
     actual = GameLogic.calculate_score((1, 1, 1, 5))
     expected = 1050
@@ -93,7 +93,7 @@ def test_six_ones():
     expected = 4000
     assert actual == expected
 
-# @pytest.mark.skip("Pending")
+@pytest.mark.skip("Pending")
 @pytest.mark.parametrize(
     "test_input,expected",
     [
