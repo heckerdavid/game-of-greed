@@ -1,3 +1,4 @@
+
 import pytest
 from game_of_greed.game_logic import GameLogic
 
@@ -148,3 +149,4 @@ def test_three_pairs():
     actual = GameLogic.calculate_score((1, 1, 3, 3, 5, 5))
     expected = 1500
     assert actual == expected
+

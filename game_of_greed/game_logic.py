@@ -1,3 +1,4 @@
+import random
 from collections import Counter
 
 class GameLogic:
@@ -31,3 +32,8 @@ class GameLogic:
             score += (tally[1] * 100)
 
         return score
+
+    @staticmethod
+    def roll_dice(num_dice):
+        return tuple(random.randint(1,6) for _ in range (0, num_dice))
+
