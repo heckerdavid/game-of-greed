@@ -8,4 +8,7 @@ class Banker:
 
     def bank(self):
        self.balance += self.shelved
-       self.shelved = 0
+       self.clear_shelf()
+
+    def clear_shelf(self):
+        self.shelved = 0
