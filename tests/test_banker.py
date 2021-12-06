@@ -10,11 +10,20 @@ def test_new_banker():
     assert banker.shelved == 0
 
 
+
 def test_shelf():
     banker = Banker()
     banker.shelf(100)
     assert banker.shelved == 100
     assert banker.balance == 0
+
+
+def test_bank_return():
+    banker = Banker()
+    banker.shelf(100)
+    added_to_bank = banker.bank()
+    assert added_to_bank == 100
+
 
 
 def test_deposit():
@@ -23,6 +32,7 @@ def test_deposit():
     banker.bank()
     assert banker.shelved == 0
     assert banker.balance == 100
+
 
 
 def test_clear_shelf():
