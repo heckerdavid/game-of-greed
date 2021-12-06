@@ -10,6 +10,13 @@ class GameLogic:
         if len(tally) == 6:
             return 1500
 
+        #calculate score for 3 pairs
+        filtered_tally = list(filter(lambda n : n == 2, tally.values()))
+        print("filter:", filtered_tally)
+        if len(filtered_tally) == 3:
+            return 1500
+            
+        #calculate 3 of a kind and up
         for dice_value in tally:
             if tally[dice_value] > 2:
                 if dice_value == 1:
