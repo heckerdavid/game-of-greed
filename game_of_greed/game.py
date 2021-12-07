@@ -10,13 +10,15 @@ class Game:
         response = input('> ')
 
         if response == 'y':
-            self.start_round(roller)
+            self.start_game(roller)
         elif response == 'n':
             print('OK. Maybe another time')
             return
 
+    def quit_game(self, user):
+        print(f'Thanks for playing. You earned {user.balance} points')
 
-    def start_round(self, roller):
+    def start_game(self, roller):
         flag = True
         round = 0
         number_of_dice = 6
@@ -27,21 +29,22 @@ class Game:
             print(f'Starting round {round}')
             print(f'Rolling {number_of_dice} dice...')
             dice_rolls = roller(number_of_dice)
-            print(f"*** {str([die for die in dice_rolls]).replace(']', '').replace('[','').replace(',', '')} ***")
+            str_rolls = [str(die) for die in dice_rolls]
+            print("*** " + " ".join(str_rolls) + " ***")
             print('Enter dice to keep, or (q)uit:')
 
             response = input('> ')
 
             if response == 'q':
-                print(f'Thanks for playing. You earned {user_bank.balance} points')
+                self.quit_game(user_bank)
                 flag = False
             else:
-                score = GameLogic.calculate_score([5])
-                number_of_dice -= len(response)
+                score = GameLogic.calculate_score([int(num) for num in response])
+                number_of_dice -= len([int(num) for num in response])
                 user_bank.shelf(score)
                 print(f'You have {user_bank.shelved} unbanked points and {number_of_dice} dice remaining')
                 print('(r)oll again, (b)ank your points or (q)uit:')
-                # flag = False
+
             
             response = input('> ')
             
@@ -50,6 +53,6 @@ class Game:
                 print(f'Total score is {user_bank.balance} points')
                 number_of_dice = 6
             elif response == 'q':
-                print(f'Thanks for playing. You earned {user_bank.balance} points')
+                self.quit_game(user_bank)
+                flag = False
 
-                
