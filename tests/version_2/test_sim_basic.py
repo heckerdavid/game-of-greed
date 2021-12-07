@@ -16,7 +16,7 @@ def test_one_and_done():
     diffs = diff(game.play, path="tests/version_2/one_and_done.sim.txt")
     assert not diffs, diffs
 
-@pytest.mark.skip()
+
 def test_single_bank():
     game = Game()
     diffs = diff(
