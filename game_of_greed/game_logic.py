@@ -13,7 +13,7 @@ class GameLogic:
 
         #calculate score for 3 pairs
         filtered_tally = list(filter(lambda n : n == 2, tally.values()))
-        print("filter:", filtered_tally)
+        # print("filter:", filtered_tally)
         if len(filtered_tally) == 3:
             return 1500
             
@@ -36,4 +36,7 @@ class GameLogic:
     @staticmethod
     def roll_dice(num_dice):
         return tuple(random.randint(1,6) for _ in range (0, num_dice))
+
+
+
 
