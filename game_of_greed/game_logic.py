@@ -37,6 +37,29 @@ class GameLogic:
     def roll_dice(num_dice):
         return tuple(random.randint(1,6) for _ in range (0, num_dice))
 
+    @staticmethod
+    def validate_keepers(roll, keepers):
+        roll_as_list = [x for x in roll]
+        for die in keepers:
+            try:
+                roll_as_list.remove(die)
+            except:
+                return False
+        return True
 
 
+    @staticmethod
+    def get_scorers(dice_set):
+        dice_count = Counter(dice_set)
+        scorers = []
+        for dice_value in dice_count:
+            if dice_value == 1 or dice_value == 5:
+                for _ in range(dice_count[dice_value]):
+                    scorers.append(dice_value)
+            else:
+                if dice_count[dice_value] > 2:
+                    for _ in range(dice_count[dice_value]):
+                        scorers.append(dice_value)
+        
+        return tuple(scorers)
 

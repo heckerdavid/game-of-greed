@@ -13,6 +13,7 @@ def test_repeat_roller():
     assert not diffs, diffs
 
 
+@pytest.mark.skip()
 def test_hot_dice():
     """When all dice are used without a zilch
     then user gets 6 fresh dice and continues turn.
@@ -21,6 +22,7 @@ def test_hot_dice():
     assert not diffs, diffs
 
 
+@pytest.mark.skip()
 def test_cheat_and_fix():
     """Cheating (or typos) should not be allowed.
     Therefore the user's input must be validated
@@ -31,6 +33,7 @@ def test_cheat_and_fix():
     assert not diffs, diffs
 
 
+@pytest.mark.skip()
 def test_zilcher():
     """
     No scoring dice results in a 'zilch'
