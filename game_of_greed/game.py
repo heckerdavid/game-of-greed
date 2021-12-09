@@ -3,56 +3,104 @@ from game_of_greed.banker import Banker
 from tests.flo import _extract_rolls
 
 class Game:
+
+    def __init__(self) -> None:
+        self.number_of_dice = 6
+        self.round = 1
+        self.flag = True
+        self.roller = None
+        self.current_dice_roll = None
+
     def play(self, roller=GameLogic.roll_dice):
+        self.roller = roller
         print("Welcome to Game of Greed")
         print('(y)es to play or (n)o to decline')
 
         response = input('> ')
 
         if response == 'y':
-            self.start_game(roller)
+            self.start_game()
         elif response == 'n':
             print('OK. Maybe another time')
             return
 
     def quit_game(self, user):
         print(f'Thanks for playing. You earned {user.balance} points')
-
-    def start_game(self, roller):
-        flag = True
-        round = 0
-        number_of_dice = 6
-        user_bank = Banker()
-
-        while flag:
-            round += 1
-            print(f'Starting round {round}')
-            print(f'Rolling {number_of_dice} dice...')
-            dice_rolls = roller(number_of_dice)
-            str_rolls = [str(die) for die in dice_rolls]
-            print("*** " + " ".join(str_rolls) + " ***")
+    
+    def roll_users_dice(self):
+        print(f'Rolling {self.number_of_dice} dice...')
+        self.current_dice_roll = self.roller(self.number_of_dice)
+        self.show_roll()
+    
+    def show_roll(self):
+        str_rolls = [str(die) for die in self.current_dice_roll]
+        print("*** " + " ".join(str_rolls) + " ***")
+        if not self.check_zilch():
             print('Enter dice to keep, or (q)uit:')
+        
+    def check_zilch(self):
+        if len(GameLogic.get_scorers(self.current_dice_roll)) == 0:
+            self.zilch()
+            return True
+            
+        return False
+    
+    def zilch(self):
+        print('****************************************')
+        print('**        Zilch!!! Round over         **')
+        print('****************************************')
+        print(f'You banked 0 points in round {self.round}')
+        print(f'Total score is {self.user_bank.balance} points')
+        self.round += 1
+        print(f'Starting round {self.round}')
+        self.number_of_dice = 6
+        self.roll_users_dice()
+
+
+
+    def start_game(self):
+        self.user_bank = Banker()
+        print(f'Starting round {self.round}')
+        self.roll_users_dice()
+
+        while self.flag:
 
             response = input('> ')
 
             if response == 'q':
-                self.quit_game(user_bank)
-                flag = False
-            else:
-                score = GameLogic.calculate_score([int(num) for num in response])
-                number_of_dice -= len([int(num) for num in response])
-                user_bank.shelf(score)
-                print(f'You have {user_bank.shelved} unbanked points and {number_of_dice} dice remaining')
-                print('(r)oll again, (b)ank your points or (q)uit:')
+                self.quit_game(self.user_bank)
+                self.flag = False
+            elif response == 'b':
+                print(f'You banked {self.user_bank.bank()} points in round {self.round}')
+                print(f'Total score is {self.user_bank.balance} points')
+                self.number_of_dice = 6
+                self.round += 1
+                print(f'Starting round {self.round}')
+                self.roll_users_dice()
+                continue
+            elif response == 'r':
+                self.roll_users_dice()
+                if self.check_zilch():
+                    print(f'Starting round {self.round}')
+                    continue
+            else: # elif regex filter to ensure numbers?? (other else to continue with "junk" input)
+                filtered_response = response.replace(' ', '')
+                user_dice_to_keep = [int(num) for num in filtered_response]
+                if GameLogic.validate_keepers(self.current_dice_roll, user_dice_to_keep):
+                    score = GameLogic.calculate_score(user_dice_to_keep)
+                    self.number_of_dice -= len(user_dice_to_keep)
+                    self.user_bank.shelf(score)
+                    print(f'You have {self.user_bank.shelved} unbanked points and {self.number_of_dice} dice remaining')
+                    if self.number_of_dice == 0:
+                        self.number_of_dice = 6
+                    print('(r)oll again, (b)ank your points or (q)uit:')
+                else:
+                    print("Cheater!!! Or possibly made a typo...")
+                    self.show_roll()
+                    continue
 
             
-            response = input('> ')
-            
-            if response == 'b':
-                print(f'You banked {user_bank.bank()} points in round {round}')
-                print(f'Total score is {user_bank.balance} points')
-                number_of_dice = 6
-            elif response == 'q':
-                self.quit_game(user_bank)
-                flag = False
-
+if __name__ == "__main__":
+    #Game.play()
+    game = Game()
+    game.play()

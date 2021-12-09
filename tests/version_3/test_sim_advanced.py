@@ -13,12 +13,14 @@ def test_repeat_roller():
     assert not diffs, diffs
 
 
+
 def test_hot_dice():
     """When all dice are used without a zilch
     then user gets 6 fresh dice and continues turn.
     """
     diffs = diff(Game().play, path="tests/version_3/hot_dice.sim.txt")
     assert not diffs, diffs
+
 
 
 def test_cheat_and_fix():
