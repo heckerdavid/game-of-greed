@@ -4,12 +4,13 @@ from tests.flo import _extract_rolls
 
 class Game:
 
-    def __init__(self) -> None:
+    def __init__(self, num_rounds=1) -> None:
         self.number_of_dice = 6
         self.round = 1
         self.flag = True
         self.roller = None
         self.current_dice_roll = None
+        self.num_rounds = num_rounds
 
     def play(self, roller=GameLogic.roll_dice):
         self.roller = roller
@@ -26,6 +27,7 @@ class Game:
 
     def quit_game(self, user):
         print(f'Thanks for playing. You earned {user.balance} points')
+        self.flag = False
     
     def roll_users_dice(self):
         print(f'Rolling {self.number_of_dice} dice...')
@@ -64,17 +66,21 @@ class Game:
         self.roll_users_dice()
 
         while self.flag:
+            if self.num_rounds > self.round:
+                self.quit_game(self.user_bank)
 
             response = input('> ')
 
             if response == 'q':
                 self.quit_game(self.user_bank)
-                self.flag = False
             elif response == 'b':
                 print(f'You banked {self.user_bank.bank()} points in round {self.round}')
                 print(f'Total score is {self.user_bank.balance} points')
                 self.number_of_dice = 6
                 self.round += 1
+                if self.round > self.num_rounds:
+                    self.quit_game(self.user_bank)
+                    continue
                 print(f'Starting round {self.round}')
                 self.roll_users_dice()
                 continue
@@ -99,7 +105,7 @@ class Game:
                     self.show_roll()
                     continue
 
-            
+
 if __name__ == "__main__":
     #Game.play()
     game = Game()
